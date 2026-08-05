@@ -100,6 +100,9 @@ This is a human-readable plan and lightweight execution record. Keep it concise.
 - Out: [...]
 
 ## Applicable Constraints
+- Do not run executables that connect to external services or databases.
+- Do not execute migration/import tools. Only build and test.
+- Ask for confirmation immediately before any command that can write external data.
 - [Only task-specific constraints, each with a source path or task reference.]
 
 ## Decisions

@@ -1,6 +1,6 @@
 ---
 description: Interview stakeholders and create a business-ready task definition for technical planning
-agent: problem-identification
+agent: build
 ---
 
 # Define Task: $ARGUMENTS
