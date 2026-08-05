@@ -24,14 +24,15 @@ When delegating, provide the milestone outcome, acceptance criteria, constraints
 ```text
 1. Find and read the context file
 2. Select the next eligible milestone
-3. Implement only that milestone
-4. Run its focused local verification
-5. AI-review the milestone changes
-6. Fix Critical and Warning findings, then re-run focused verification
-7. Record results and pause for human review
-8. Receive explicit human consent
-9. Mark the milestone approved and repeat for the next eligible milestone
-10. After final milestone approval, run full validation and complete the task
+3. Analyze the milestone's technical implementation approach and pause for human approval
+4. Implement only that milestone
+5. Run its focused local verification
+6. AI-review the milestone changes
+7. Fix Critical and Warning findings, then re-run focused verification
+8. Record results and pause for human review
+9. Receive explicit human consent
+10. Mark the milestone approved and repeat for the next eligible milestone
+11. After final milestone approval, run full validation and complete the task
 ```
 
 Passing tests never replaces AI or human code review. Do not combine several planned milestones into one implementation wave merely because their files are related.
@@ -55,7 +56,22 @@ Set task status to `IN_PROGRESS`; set the selected milestone status to `IN_PROGR
 
 The milestone, not its file list, is the execution boundary. Within that boundary, group tightly coupled files together and use parallel work only for genuinely independent areas that do not create edit conflicts.
 
-## Step 3: Implement The Milestone
+## Step 3: Technical Analysis Gate
+
+Before implementation, analyze the selected milestone against the repository. Read the relevant code, tests, configuration, and analogous behavior needed to determine a concrete approach.
+
+Record the analysis in the execution record, including:
+
+- Relevant existing behavior, patterns, and files
+- Proposed implementation approach and expected files or areas to change
+- Dependencies, compatibility considerations, risks, and open questions
+- Focused local verification strategy
+
+Set the selected milestone status to `AWAITING_TECHNICAL_APPROVAL`. Tell the user the technical analysis is ready, present the proposed approach, and ask for explicit approval to implement. Stop here. Do not edit implementation files, run implementation verification, or start another milestone until the user explicitly approves.
+
+When the user explicitly approves, set the selected milestone status back to `IN_PROGRESS`, update the timestamp and execution record with the approval, and continue to Step 4. If the user requests changes, update the analysis and repeat this gate.
+
+## Step 4: Implement The Milestone
 
 Implement or delegate only the selected milestone. Follow applicable project guidance and existing patterns. Keep any required tests and configuration changes within the milestone that introduces the behavior.
 
@@ -86,7 +102,7 @@ Return: files changed, acceptance-criteria status, validation result, issues, an
 
 Update the milestone scope if implementation requires an additional file. Record the reason. If the required change expands the milestone's outcome or invalidates its review boundary, stop and revise the plan with the user rather than silently adding work.
 
-## Step 4: Focused Local Verification
+## Step 5: Focused Local Verification
 
 Run the milestone's documented local verification before AI review. Use the project-prescribed command when available. If the plan has no clear command, perform the stated verification procedure; if neither is adequate, identify the missing verification and ask the user before proceeding.
 
@@ -94,7 +110,7 @@ If verification fails, fix only the milestone-related failure and re-run it. Do 
 
 Record the exact command or procedure and result in the execution record.
 
-## Step 5: AI Review
+## Step 6: AI Review
 
 Review only the files and behavior changed for the selected milestone. Use the most suitable available review subagent; otherwise perform a direct review.
 
@@ -116,7 +132,7 @@ Fix all Critical and Warning findings within the milestone. Record Suggestions w
 
 If a finding requires changing a previous approved milestone's contract or expanding the current milestone, stop and request a plan revision or user decision.
 
-## Step 6: Human Review Gate
+## Step 7: Human Review Gate
 
 After local verification passes and AI review is complete, set the selected milestone status to `AWAITING_HUMAN_APPROVAL`. Update the execution record with:
 
@@ -128,16 +144,16 @@ After local verification passes and AI review is complete, set the selected mile
 
 Tell the user the milestone is ready for review and ask for explicit consent to continue. A simple conversational response such as `approved`, `continue`, or equivalent is sufficient. Stop here. Do not start the next milestone in the same invocation.
 
-## Step 7: Record Human Approval
+## Step 8: Record Human Approval
 
 After the user explicitly consents, set that milestone status to `APPROVED`, update the timestamp and execution record with the approval, and then:
 
 - If another milestone is eligible, begin it through Step 2.
-- If this was the final milestone, proceed to final validation.
+- If this was the final milestone, proceed to Step 9.
 
 If the user requests changes, set the milestone status back to `IN_PROGRESS`, record the request, and repeat Steps 3-6.
 
-## Step 8: Final Validation And Completion
+## Step 9: Final Validation And Completion
 
 Only after every milestone is `APPROVED`, run the project's full required validation. Determine commands from applicable `AGENTS.md`, `LEARNINGS.md`, scripts, Makefiles, CI configuration, and project documentation.
 
