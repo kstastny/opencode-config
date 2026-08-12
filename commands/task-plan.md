@@ -7,7 +7,7 @@ agent: build
 
 ## Purpose
 
-Turn an approved business definition and technical research document into a concise, reviewable implementation plan. This is design work, not implementation: select the approach, define essential decisions and validation, and create milestones only when they improve safe delivery and reviewability.
+Turn an approved business definition and technical research document into a concise, reviewable outcome-level implementation plan. This is design work, not implementation: select the approach, define essential decisions and validation, and create milestones only when they improve safe delivery and reviewability. Each approved milestone receives a separate concrete technical implementation plan and human approval gate in `/task-implement` before code changes begin.
 
 ## Step 1: Load Approved Inputs And Guidance
 
@@ -52,7 +52,7 @@ Create a plan that states:
 
 - The intended behavior and approach.
 - Essential architecture decisions and external contracts.
-- Expected files or areas, as estimates rather than a binding implementation contract.
+- Expected files or areas, as estimates rather than a binding implementation contract. `/task-implement` must investigate and obtain human approval for the concrete files, modules, contracts, and mechanics before editing.
 - Required configuration, migration, integration, compatibility, privacy, security, and rollout work when applicable.
 - Focused local validation for each unit of work and final validation for the task.
 
@@ -82,7 +82,7 @@ Do not split merely by technical layer such as models, services, and tests. Pref
 
 Describe outcomes, scope, acceptance criteria, essential architecture decisions, and external contracts. Do not prescribe incidental method names, signatures, constructors, or implementation mechanics unless externally required.
 
-For each milestone, identify expected files or areas, applicable skills, dependencies, local validation command(s), and the human-review boundary.
+For each milestone, identify expected files or areas, applicable skills, dependencies, local validation command(s), and the human-review boundary. Do not force a file-by-file technical design here; `/task-implement` creates that design after the milestone is selected and pauses for human technical-plan approval before editing.
 
 ## Step 5: Create Or Update The Plan
 
@@ -128,7 +128,7 @@ Ensure `tasks/` exists at the repository root. Create or update `tasks/task-[TAS
 ## Milestones
 
 ### M1: [Outcome-oriented title]
-- Status: PLANNED
+- Status: PLANNED / TECHNICAL_PLANNING / AWAITING_HUMAN_IMPLEMENTATION_PLAN_APPROVAL / IN_PROGRESS / AWAITING_HUMAN_APPROVAL / APPROVED
 - Outcome: [observable capability or safe prerequisite]
 - Scope: [expected files or areas]
 - Applicable skills: [skills or project convention]
@@ -137,6 +137,7 @@ Ensure `tasks/` exists at the repository root. Create or update `tasks/task-[TAS
 - Acceptance criteria:
   - [...]
 - Local verification: `[focused command]` or `[how to verify when no command exists]`
+- Technical implementation plan: required and human-approved before editing
 - AI review: required after local verification
 - Human review: required before M2; explicit user consent is sufficient
 
@@ -150,6 +151,7 @@ Ensure `tasks/` exists at the repository root. Create or update `tasks/task-[TAS
 - Acceptance criteria:
   - [...]
 - Local verification: `[focused command]`
+- Technical implementation plan: required and human-approved before editing
 - AI review: required after local verification
 - Human review: required before the next milestone or final completion; explicit user consent is sufficient
 
@@ -172,7 +174,7 @@ When planning is complete, set the status to `AWAITING_HUMAN_PLAN_APPROVAL`. Tel
 
 1. Plan file path.
 2. Intended approach and essential decisions.
-3. Milestone summary, including local verification and approval boundary for each.
+3. Milestone summary, including local verification and the later per-milestone technical-plan approval boundary.
 4. Blocking questions resolved and assumptions made.
 5. Relevant constraints, risks, and `LEARNINGS.md` update status.
 6. Ask for explicit approval to implement. A response such as `approved` or `continue` is sufficient.
